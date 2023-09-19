@@ -1,0 +1,7 @@
+application_owner = "Andrea Cannuni"
+
+application_owner_email = "info@example.com"
+
+key_pair_key_name   = "andrea-key-20230101"
+
+key_pair_public_key = "ssh-rsa AAAA..."
