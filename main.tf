@@ -85,7 +85,7 @@ resource "aws_security_group" "web" {
     },
     {
       cidr_blocks      = [
-        "${chomp(data.http.myip.body)}/32"
+        "${chomp(data.http.myip.response_body)}/32"
       ]
       description      = "SSH connection for ${var.application_owner}"
       from_port        = 22
@@ -129,6 +129,7 @@ resource "aws_security_group" "web" {
       tags["Role Name"],
       tags["email"]
     ]
+    create_before_destroy = true
   }
 }
 
@@ -161,7 +162,7 @@ resource "aws_instance" "web" {
   ami                                  = coalesce(var.ami, data.aws_ami.ubuntu.id)
   iam_instance_profile                 = var.iam_instance_profile_name
   instance_type                        = var.ec2_instance_type
-  key_name                             = aws_key_pair.deployer.key_name
+  key_name                             = var.key_pair_key_name
   tags                                 = {
     "App"             = "${var.application_name}"
     "Environment"     = "${var.application_environment}"
@@ -169,7 +170,7 @@ resource "aws_instance" "web" {
     "Owner"           = "${var.application_owner}"
     "Role"            = "Web server"
     "Team"            = "${var.application_team}"
-}
+  }
 
   root_block_device {
     tags                  = {
@@ -303,14 +304,5 @@ resource "aws_security_group" "lb" {
     "Name"  = "${var.application_slug}-${var.application_environment}-load-balancer-security-group"
     "Owner" = "${var.application_owner}"
     "Team"  = "${var.application_team}"
-  }
-}
-
-resource "aws_key_pair" "deployer" {
-  key_name   = var.key_pair_key_name
-  public_key = var.key_pair_public_key
-  tags       = {
-    "Owner"   = "${var.application_owner}"
-    "Team"    = "${var.application_team}"
   }
 }

@@ -75,7 +75,13 @@ variable "iam_instance_profile_name" {
 }
 
 variable "has_load_balancer" {
-  description = "Flag to set an Application Load Balancer (1) or not (0)"
+  description = "Flag to set an Application Load Balancer (`true`) or not (`false`). Default `false`"
+  type        = bool
+  default     = false
+}
+
+variable "has_database" {
+  description = "Flag to set a Database (`true`) or not (`false`). Default `false`"
   type        = bool
   default     = false
 }
