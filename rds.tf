@@ -53,11 +53,12 @@ resource "aws_security_group" "db" {
 }
 
 resource "aws_db_instance" "primary" {
-  count             = var.has_database ? 1 : 0
+  count                                 = var.has_database ? 1 : 0
   allocated_storage                     = 20
-  deletion_protection                   = true
   engine                                = "mysql"
+  final_snapshot_identifier             = "${var.application_slug}-${var.application_environment}-database-final-snapshot"
   instance_class                        = "db.t2.micro"
+  password                              = var.database_password
   tags                                  = {
     "App"   = "${var.application_name}"
     "Name"  = "${var.application_slug}-${var.application_environment}-database"
@@ -68,4 +69,7 @@ resource "aws_db_instance" "primary" {
   vpc_security_group_ids                = [
       aws_security_group.db[0].id,
   ]
+
+  apply_immediately                     = var.database_apply_changes_immediately
+  deletion_protection                   = var.database_deletion_protection
 }

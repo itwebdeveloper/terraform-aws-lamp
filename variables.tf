@@ -85,3 +85,21 @@ variable "has_database" {
   type        = bool
   default     = false
 }
+
+variable "database_password" {
+  description = "Password of the RDS instance"
+  type        = string
+  default     = ""
+}
+
+variable "database_apply_changes_immediately" {
+  description = "Specifies whether any database modifications are applied immediately, or during the next maintenance window. Default is `false`."
+  type        = bool
+  default     = false
+}
+
+variable "database_deletion_protection" {
+  description = "If the DB instance should have deletion protection enabled. The database can't be deleted when this value is set to `true`. The default is `true`."
+  type        = bool
+  default     = true
+}
