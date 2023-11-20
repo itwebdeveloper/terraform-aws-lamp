@@ -31,10 +31,6 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-data "http" "myip" {
-  url = "http://ipv4.icanhazip.com"
-}
-
 resource "aws_eip" "web" {
   instance             = aws_instance.web.id
   tags                 = {
@@ -52,51 +48,7 @@ resource "aws_eip" "web" {
 
 resource "aws_security_group" "web" {
   description = "Security Group for ${var.application_name} web server"
-  ingress     = [
-    {
-      cidr_blocks      = [
-        "0.0.0.0/0",
-      ]
-      description      = "Allow HTTP connections from everywhere"
-      from_port        = 80
-      ipv6_cidr_blocks = [
-        "::/0",
-      ]
-      prefix_list_ids  = []
-      protocol         = "tcp"
-      security_groups  = []
-      self             = false
-      to_port          = 80
-    },
-    {
-      cidr_blocks      = [
-        "0.0.0.0/0",
-      ]
-      description      = "Allow HTTPS connections from everywhere"
-      from_port        = 443
-      ipv6_cidr_blocks = [
-        "::/0",
-      ]
-      prefix_list_ids  = []
-      protocol         = "tcp"
-      security_groups  = []
-      self             = false
-      to_port          = 443
-    },
-    {
-      cidr_blocks      = [
-        "${chomp(data.http.myip.response_body)}/32"
-      ]
-      description      = "SSH connection for ${var.application_owner}"
-      from_port        = 22
-      ipv6_cidr_blocks = []
-      prefix_list_ids  = []
-      protocol         = "tcp"
-      security_groups  = []
-      self             = false
-      to_port          = 22
-    },
-  ]
+  ingress     = var.ec2_security_group_ingress
 
   egress = [
     {
@@ -190,6 +142,7 @@ resource "aws_instance" "web" {
 
   lifecycle {
     ignore_changes = [
+      ami,
       tags["Schedule"],
       tags["ScheduleMessage"],
       tags["Created by"],

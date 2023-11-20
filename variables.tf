@@ -74,6 +74,56 @@ variable "iam_instance_profile_name" {
   default     = "CloudWatchAgentServerRole"
 }
 
+variable "ec2_security_group_ingress" {
+  description = "Ingress rules for the EC2 instance security group"
+  type = list
+  default = [
+    {
+      cidr_blocks      = [
+        "0.0.0.0/0",
+      ]
+      description      = "Allow HTTP connections from everywhere"
+      from_port        = 80
+      ipv6_cidr_blocks = [
+        "::/0",
+      ]
+      prefix_list_ids  = []
+      protocol         = "tcp"
+      security_groups  = []
+      self             = false
+      to_port          = 80
+    },
+    {
+      cidr_blocks      = [
+        "0.0.0.0/0",
+      ]
+      description      = "Allow HTTPS connections from everywhere"
+      from_port        = 443
+      ipv6_cidr_blocks = [
+        "::/0",
+      ]
+      prefix_list_ids  = []
+      protocol         = "tcp"
+      security_groups  = []
+      self             = false
+      to_port          = 443
+    },
+    {
+      cidr_blocks      = [
+        "0.0.0.0/0",
+      ]
+      description      = "SSH connections from everywhere"
+      from_port        = 22
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      protocol         = "tcp"
+      security_groups  = []
+      self             = false
+      to_port          = 22
+    },
+  ]
+}
+
 variable "has_load_balancer" {
   description = "Flag to set an Application Load Balancer (`true`) or not (`false`). Default `false`"
   type        = bool
