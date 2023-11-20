@@ -24,8 +24,8 @@ resource "aws_security_group" "web" {
 
   egress = [
     {
-      cidr_blocks      = [
-          "0.0.0.0/0",
+      cidr_blocks = [
+        "0.0.0.0/0",
       ]
       description      = ""
       from_port        = 0
@@ -38,8 +38,8 @@ resource "aws_security_group" "web" {
     }
   ]
 
-  name        = "${var.application_slug}-${var.application_environment}-security-group"
-  tags        = {
+  name = "${var.application_slug}-${var.application_environment}-security-group"
+  tags = {
     "App"   = "${var.application_name}"
     "Name"  = "${var.application_slug}-${var.application_environment}-security-group"
     "Owner" = "${var.application_owner}"
@@ -58,14 +58,14 @@ resource "aws_security_group" "web" {
 }
 
 resource "aws_network_interface" "web" {
-  description        = "Primary network interface"
-  subnet_id          = coalesce(var.eni_subnet_id, tolist((data.aws_subnet_ids.all.ids))[0])
+  description = "Primary network interface"
+  subnet_id   = coalesce(var.eni_subnet_id, tolist((data.aws_subnet_ids.all.ids))[0])
 
-  security_groups    = [
-      aws_security_group.web.id,
+  security_groups = [
+    aws_security_group.web.id,
   ]
 
-  tags               = {
+  tags = {
     "App"   = "${var.application_name}"
     "Name"  = "${var.application_slug}-${var.application_environment}-network-interface"
     "Owner" = "${var.application_owner}"
@@ -83,21 +83,21 @@ resource "aws_network_interface" "web" {
 }
 
 resource "aws_instance" "web" {
-  ami                                  = coalesce(var.ami, data.aws_ami.ubuntu.id)
-  iam_instance_profile                 = var.iam_instance_profile_name
-  instance_type                        = var.ec2_instance_type
-  key_name                             = var.key_pair_key_name
-  tags                                 = {
-    "App"             = "${var.application_name}"
-    "Environment"     = "${var.application_environment}"
-    "Name"            = "${var.application_slug}-${var.application_environment}-web-1"
-    "Owner"           = "${var.application_owner}"
-    "Role"            = "Web server"
-    "Team"            = "${var.application_team}"
+  ami                  = coalesce(var.ami, data.aws_ami.ubuntu.id)
+  iam_instance_profile = var.iam_instance_profile_name
+  instance_type        = var.ec2_instance_type
+  key_name             = var.key_pair_key_name
+  tags = {
+    "App"         = "${var.application_name}"
+    "Environment" = "${var.application_environment}"
+    "Name"        = "${var.application_slug}-${var.application_environment}-web-1"
+    "Owner"       = "${var.application_owner}"
+    "Role"        = "Web server"
+    "Team"        = "${var.application_team}"
   }
 
   root_block_device {
-    tags                  = {
+    tags = {
       "App"         = "${var.application_name}"
       "Environment" = "${var.application_environment}"
       "Name"        = "${var.application_slug}-${var.application_environment}-ebs"
@@ -130,16 +130,16 @@ resource "aws_instance" "web" {
 }
 
 resource "aws_lb" "web" {
-  count                      = var.has_load_balancer ? 1 : 0
-  name                       = "${var.application_slug}-${var.application_environment}-lb"
-  security_groups            = [
+  count = var.has_load_balancer ? 1 : 0
+  name  = "${var.application_slug}-${var.application_environment}-lb"
+  security_groups = [
     aws_security_group.lb[0].id,
   ]
-  subnets                    = [
+  subnets = [
     "subnet-09f1db6c",
     "subnet-fbdf63f7",
   ]
-  tags                       = {
+  tags = {
     "App"   = "${var.application_name}"
     "Name"  = "${var.application_slug}-${var.application_environment}-lb"
     "Owner" = "${var.application_owner}"
@@ -175,56 +175,56 @@ resource "aws_lb_listener" "https" {
 }
 
 resource "aws_lb_target_group" "http" {
-  count             = var.has_load_balancer ? 1 : 0
-  port              = 80
-  protocol          = "HTTP"
-  tags              = {
+  count    = var.has_load_balancer ? 1 : 0
+  port     = 80
+  protocol = "HTTP"
+  tags = {
     "App"   = "${var.application_name}"
     "Name"  = "${var.application_slug}-${var.application_environment}-target-group"
     "Owner" = "${var.application_owner}"
     "Team"  = "${var.application_team}"
   }
 
-  vpc_id            = data.aws_vpc.default.id
+  vpc_id = data.aws_vpc.default.id
 }
 
 resource "aws_security_group" "lb" {
-  count             = var.has_load_balancer ? 1 : 0
+  count       = var.has_load_balancer ? 1 : 0
   description = "Security Group for the ${var.application_name} ${var.application_environment} Load Balancer"
-  ingress     = [
+  ingress = [
     {
-      cidr_blocks      = [
+      cidr_blocks = [
         "0.0.0.0/0",
       ]
-      description      = ""
-      from_port        = 443
+      description = ""
+      from_port   = 443
       ipv6_cidr_blocks = [
         "::/0",
       ]
-      prefix_list_ids  = []
-      protocol         = "tcp"
-      security_groups  = []
-      self             = false
-      to_port          = 443
+      prefix_list_ids = []
+      protocol        = "tcp"
+      security_groups = []
+      self            = false
+      to_port         = 443
     },
     {
-      cidr_blocks      = [
+      cidr_blocks = [
         "0.0.0.0/0",
       ]
-      description      = ""
-      from_port        = 80
+      description = ""
+      from_port   = 80
       ipv6_cidr_blocks = [
         "::/0",
       ]
-      prefix_list_ids  = []
-      protocol         = "tcp"
-      security_groups  = []
-      self             = false
-      to_port          = 80
+      prefix_list_ids = []
+      protocol        = "tcp"
+      security_groups = []
+      self            = false
+      to_port         = 80
     },
   ]
-  name        = "${var.application_slug}-${var.application_environment}-load-balancer-security-group"
-  tags        = {
+  name = "${var.application_slug}-${var.application_environment}-load-balancer-security-group"
+  tags = {
     "App"   = "${var.application_name}"
     "Name"  = "${var.application_slug}-${var.application_environment}-load-balancer-security-group"
     "Owner" = "${var.application_owner}"

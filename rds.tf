@@ -1,7 +1,7 @@
 resource "aws_security_group" "db" {
-  count             = var.has_database ? 1 : 0
+  count       = var.has_database ? 1 : 0
   description = "Security Group for the ${var.application_name} database"
-  ingress     = [
+  ingress = [
     {
       cidr_blocks      = []
       description      = "Allow MySQL connections from the ${var.application_name} ${var.application_environment} web server"
@@ -9,18 +9,18 @@ resource "aws_security_group" "db" {
       ipv6_cidr_blocks = []
       prefix_list_ids  = []
       protocol         = "tcp"
-      security_groups  = [
-          aws_security_group.web.id
+      security_groups = [
+        aws_security_group.web.id
       ]
-      self             = false
-      to_port          = 3306
+      self    = false
+      to_port = 3306
     },
   ]
 
   egress = [
     {
-      cidr_blocks      = [
-          "0.0.0.0/0",
+      cidr_blocks = [
+        "0.0.0.0/0",
       ]
       description      = ""
       from_port        = 0
@@ -33,8 +33,8 @@ resource "aws_security_group" "db" {
     }
   ]
 
-  name        = "${var.application_slug}-${var.application_environment}-database-security-group"
-  tags        = {
+  name = "${var.application_slug}-${var.application_environment}-database-security-group"
+  tags = {
     "App"   = "${var.application_name}"
     "Name"  = "${var.application_slug}-${var.application_environment}-database-security-group"
     "Owner" = "${var.application_owner}"
@@ -53,23 +53,23 @@ resource "aws_security_group" "db" {
 }
 
 resource "aws_db_instance" "primary" {
-  count                                 = var.has_database ? 1 : 0
-  allocated_storage                     = 20
-  engine                                = "mysql"
-  final_snapshot_identifier             = "${var.application_slug}-${var.application_environment}-database-final-snapshot"
-  instance_class                        = "db.t2.micro"
-  password                              = var.database_password
-  tags                                  = {
+  count                     = var.has_database ? 1 : 0
+  allocated_storage         = 20
+  engine                    = "mysql"
+  final_snapshot_identifier = "${var.application_slug}-${var.application_environment}-database-final-snapshot"
+  instance_class            = "db.t2.micro"
+  password                  = var.database_password
+  tags = {
     "App"   = "${var.application_name}"
     "Name"  = "${var.application_slug}-${var.application_environment}-database"
     "Owner" = "${var.application_owner}"
     "Team"  = "${var.application_team}"
   }
-  username                              = "root"
-  vpc_security_group_ids                = [
-      aws_security_group.db[0].id,
+  username = "root"
+  vpc_security_group_ids = [
+    aws_security_group.db[0].id,
   ]
 
-  apply_immediately                     = var.database_apply_changes_immediately
-  deletion_protection                   = var.database_deletion_protection
+  apply_immediately   = var.database_apply_changes_immediately
+  deletion_protection = var.database_deletion_protection
 }

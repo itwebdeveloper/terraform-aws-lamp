@@ -7,7 +7,7 @@ data "aws_subnet_ids" "all" {
 
   filter {
     name   = "availability-zone"
-    values = [format("%s%s", data.aws_region.current.name,"a")]
+    values = [format("%s%s", data.aws_region.current.name, "a")]
   }
 }
 
@@ -16,14 +16,14 @@ data "http" "myip" {
 }
 
 resource "aws_eip" "web" {
-  instance             = aws_instance.web.id
-  tags                 = {
+  instance = aws_instance.web.id
+  tags = {
     "App"   = "${var.application_name}"
     "Name"  = "${var.application_slug}-${var.application_environment}-elastic-ip-address"
     "Owner" = "${var.application_owner}"
     "Team"  = "${var.application_team}"
   }
-  vpc                  = true
+  vpc = true
 
   lifecycle {
     prevent_destroy = true

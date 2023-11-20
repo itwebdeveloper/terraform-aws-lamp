@@ -1,31 +1,31 @@
 variable "application_name" {
   description = "Application name"
-  type = string
+  type        = string
 }
 
 variable "application_slug" {
   description = "Dash-separated-lowercase application name"
-  type = string
+  type        = string
 }
 
 variable "application_owner" {
   description = "Full name of the owner of the application, useful for billing"
-  type = string
+  type        = string
 }
 
 variable "application_owner_email" {
   description = "Email of the owner of the application, useful for billing identification"
-  type = string
+  type        = string
 }
 
 variable "application_team" {
   description = "Team owning the application, useful for billing identification"
-  type = string
+  type        = string
 }
 
 variable "application_environment" {
   description = "Application environment"
-  type = string
+  type        = string
 
   validation {
     condition     = contains(["dev", "qa", "staging", "prod"], var.application_environment)
@@ -35,13 +35,13 @@ variable "application_environment" {
 
 variable "ami_filter_name" {
   description = "Search string to match with the name of the AWS AMI"
-  type = string
+  type        = string
 }
 
 variable "ec2_instance_type" {
   description = "Type of the EC2 instance"
-  type = string
-  default = "t3.micro"
+  type        = string
+  default     = "t3.micro"
 }
 
 variable "key_pair_key_name" {
@@ -58,13 +58,13 @@ variable "key_pair_public_key" {
 
 variable "ami" {
   description = "AMI used to create the AWS EC2 instance"
-  type = string
+  type        = string
   default     = ""
 }
 
 variable "eni_subnet_id" {
   description = "Subnet ID used by the network interface attached to the AWS EC2 instance"
-  type = string
+  type        = string
   default     = ""
 }
 
@@ -76,40 +76,40 @@ variable "iam_instance_profile_name" {
 
 variable "ec2_security_group_ingress" {
   description = "Ingress rules for the EC2 instance security group"
-  type = list
+  type        = list(any)
   default = [
     {
-      cidr_blocks      = [
+      cidr_blocks = [
         "0.0.0.0/0",
       ]
-      description      = "Allow HTTP connections from everywhere"
-      from_port        = 80
+      description = "Allow HTTP connections from everywhere"
+      from_port   = 80
       ipv6_cidr_blocks = [
         "::/0",
       ]
-      prefix_list_ids  = []
-      protocol         = "tcp"
-      security_groups  = []
-      self             = false
-      to_port          = 80
+      prefix_list_ids = []
+      protocol        = "tcp"
+      security_groups = []
+      self            = false
+      to_port         = 80
     },
     {
-      cidr_blocks      = [
+      cidr_blocks = [
         "0.0.0.0/0",
       ]
-      description      = "Allow HTTPS connections from everywhere"
-      from_port        = 443
+      description = "Allow HTTPS connections from everywhere"
+      from_port   = 443
       ipv6_cidr_blocks = [
         "::/0",
       ]
-      prefix_list_ids  = []
-      protocol         = "tcp"
-      security_groups  = []
-      self             = false
-      to_port          = 443
+      prefix_list_ids = []
+      protocol        = "tcp"
+      security_groups = []
+      self            = false
+      to_port         = 443
     },
     {
-      cidr_blocks      = [
+      cidr_blocks = [
         "0.0.0.0/0",
       ]
       description      = "SSH connections from everywhere"
