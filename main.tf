@@ -39,12 +39,7 @@ resource "aws_security_group" "web" {
   ]
 
   name = "${var.application_slug}-${var.application_environment}-security-group"
-  tags = {
-    "App"   = "${var.application_name}"
-    "Name"  = "${var.application_slug}-${var.application_environment}-security-group"
-    "Owner" = "${var.application_owner}"
-    "Team"  = "${var.application_team}"
-  }
+  tags = local.ec2_instance_security_group_tags
 
   lifecycle {
     ignore_changes = [
