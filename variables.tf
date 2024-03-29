@@ -62,6 +62,12 @@ variable "ami" {
   default     = ""
 }
 
+variable "ebs_size" {
+  description = "Size (in GB) of the EBS EC2 root volume"
+  type        = number
+  default     = 8
+}
+
 variable "eni_subnet_id" {
   description = "Subnet ID used by the network interface attached to the AWS EC2 instance"
   type        = string

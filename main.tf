@@ -85,7 +85,8 @@ resource "aws_instance" "web" {
   tags                 = local.ec2_instance_tags
 
   root_block_device {
-    tags = local.ebs_volume_tags
+    volume_size = var.ebs_size
+    tags        = local.ebs_volume_tags
   }
 
   network_interface {
