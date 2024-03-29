@@ -153,3 +153,146 @@ variable "database_deletion_protection" {
   type        = bool
   default     = true
 }
+
+locals {
+  cloudwatch_alarms_tags = {
+    App         = var.application_name
+    Environment = var.application_environment
+    Name        = "${var.application_slug}-${var.application_environment}-cloudwatch-alarm"
+    Owner       = var.application_owner
+    Project     = var.application_name
+    Role        = "Web"
+    Team        = var.application_team
+  }
+
+  ec2_instance_security_group_tags = {
+    App         = var.application_name
+    Environment = var.application_environment
+    Name        = "${var.application_slug}-${var.application_environment}-security-group"
+    Owner       = var.application_owner
+    Project     = var.application_name
+    Role        = "Web"
+    Team        = var.application_team
+  }
+
+  ec2_instance_tags = {
+    App         = var.application_name
+    Environment = var.application_environment
+    Name        = "${var.application_slug}-${var.application_environment}-web-1"
+    Owner       = var.application_owner
+    Project     = var.application_name
+    Role        = "Web"
+    Team        = var.application_team
+  }
+
+  ebs_volume_tags = {
+    App         = var.application_name
+    Environment = var.application_environment
+    Name        = "${var.application_slug}-${var.application_environment}-ebs"
+    Owner       = var.application_owner
+    Project     = var.application_name
+    Role        = "Web"
+    Team        = var.application_team
+  }
+
+  elastic_ip_tags = {
+    App         = var.application_name
+    Environment = var.application_environment
+    Name        = "${var.application_slug}-${var.application_environment}-elastic-ip-address"
+    Owner       = var.application_owner
+    Project     = var.application_name
+    Role        = "Web"
+    Team        = var.application_team
+  }
+
+  network_interface_tags = {
+    App         = var.application_name
+    Environment = var.application_environment
+    Name        = "${var.application_slug}-${var.application_environment}-network-interface"
+    Owner       = var.application_owner
+    Project     = var.application_name
+    Role        = "Web"
+    Team        = var.application_team
+  }
+
+  load_balancer_tags = {
+    App         = var.application_name
+    Environment = var.application_environment
+    Name        = "${var.application_slug}-${var.application_environment}-load-balancer"
+    Owner       = var.application_owner
+    Project     = var.application_name
+    Role        = "Web"
+    Team        = var.application_team
+  }
+
+  load_balancer_http_listener_tags = {
+    App         = var.application_name
+    Environment = var.application_environment
+    Name        = "${var.application_slug}-${var.application_environment}-load-balancer-http-listener"
+    Owner       = var.application_owner
+    Project     = var.application_name
+    Role        = "Web"
+    Team        = var.application_team
+  }
+
+  load_balancer_https_listener_tags = {
+    App         = var.application_name
+    Environment = var.application_environment
+    Name        = "${var.application_slug}-${var.application_environment}-load-balancer-https-listener"
+    Owner       = var.application_owner
+    Project     = var.application_name
+    Role        = "Web"
+    Team        = var.application_team
+  }
+
+  load_balancer_target_group_tags = {
+    App         = var.application_name
+    Environment = var.application_environment
+    Name        = "${var.application_slug}-${var.application_environment}-load-balancer-target-group"
+    Owner       = var.application_owner
+    Project     = var.application_name
+    Role        = "Web"
+    Team        = var.application_team
+  }
+
+  load_balancer_security_group_tags = {
+    App         = var.application_name
+    Environment = var.application_environment
+    Name        = "${var.application_slug}-${var.application_environment}-load-balancer-security-group"
+    Owner       = var.application_owner
+    Project     = var.application_name
+    Role        = "Web"
+    Team        = var.application_team
+  }
+
+
+  rds_instance_security_group_tags = {
+    App         = var.application_name
+    Environment = var.application_environment
+    Name        = "${var.application_slug}-${var.application_environment}-database-security-group"
+    Owner       = var.application_owner
+    Project     = var.application_name
+    Role        = "DB"
+    Team        = var.application_team
+  }
+
+  rds_instance_tags = {
+    App         = var.application_name
+    Environment = var.application_environment
+    Name        = "${var.application_slug}-${var.application_environment}-database"
+    Owner       = var.application_owner
+    Project     = var.application_name
+    Role        = "DB"
+    Team        = var.application_team
+  }
+
+  sns_topic_tags = {
+    App         = var.application_name
+    Environment = var.application_environment
+    Name        = "${var.application_slug}-${var.application_environment}-sns-topic"
+    Owner       = var.application_owner
+    Project     = var.application_name
+    Role        = "Web"
+    Team        = var.application_team
+  }
+}

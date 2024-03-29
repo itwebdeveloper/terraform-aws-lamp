@@ -65,12 +65,7 @@ resource "aws_network_interface" "web" {
     aws_security_group.web.id,
   ]
 
-  tags = {
-    "App"   = "${var.application_name}"
-    "Name"  = "${var.application_slug}-${var.application_environment}-network-interface"
-    "Owner" = "${var.application_owner}"
-    "Team"  = "${var.application_team}"
-  }
+  tags = local.network_interface_tags
 
   lifecycle {
     ignore_changes = [
@@ -87,23 +82,10 @@ resource "aws_instance" "web" {
   iam_instance_profile = var.iam_instance_profile_name
   instance_type        = var.ec2_instance_type
   key_name             = var.key_pair_key_name
-  tags = {
-    "App"         = "${var.application_name}"
-    "Environment" = "${var.application_environment}"
-    "Name"        = "${var.application_slug}-${var.application_environment}-web-1"
-    "Owner"       = "${var.application_owner}"
-    "Role"        = "Web server"
-    "Team"        = "${var.application_team}"
-  }
+  tags                 = local.ec2_instance_tags
 
   root_block_device {
-    tags = {
-      "App"         = "${var.application_name}"
-      "Environment" = "${var.application_environment}"
-      "Name"        = "${var.application_slug}-${var.application_environment}-ebs"
-      "Owner"       = "${var.application_owner}"
-      "Team"        = "${var.application_team}"
-    }
+    tags = local.ebs_volume_tags
   }
 
   network_interface {
@@ -139,12 +121,7 @@ resource "aws_lb" "web" {
     "subnet-09f1db6c",
     "subnet-fbdf63f7",
   ]
-  tags = {
-    "App"   = "${var.application_name}"
-    "Name"  = "${var.application_slug}-${var.application_environment}-lb"
-    "Owner" = "${var.application_owner}"
-    "Team"  = "${var.application_team}"
-  }
+  tags = local.load_balancer_tags
 }
 
 resource "aws_lb_listener" "http" {
@@ -152,7 +129,7 @@ resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.web[0].arn
   port              = 80
   protocol          = "HTTP"
-  tags              = {}
+  tags              = local.load_balancer_http_listener_tags
 
   default_action {
     target_group_arn = aws_lb_target_group.http[0].arn
@@ -166,7 +143,7 @@ resource "aws_lb_listener" "https" {
   port              = 443
   protocol          = "HTTPS"
   certificate_arn   = "arn:aws:acm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:certificate/722f58cc-c176-4c76-8d7d-29f3ba97c5a2"
-  tags              = {}
+  tags              = local.load_balancer_https_listener_tags
 
   default_action {
     target_group_arn = aws_lb_target_group.http[0].arn
@@ -178,12 +155,7 @@ resource "aws_lb_target_group" "http" {
   count    = var.has_load_balancer ? 1 : 0
   port     = 80
   protocol = "HTTP"
-  tags = {
-    "App"   = "${var.application_name}"
-    "Name"  = "${var.application_slug}-${var.application_environment}-target-group"
-    "Owner" = "${var.application_owner}"
-    "Team"  = "${var.application_team}"
-  }
+  tags = local.load_balancer_target_group_tags
 
   vpc_id = data.aws_vpc.default.id
 }
@@ -224,10 +196,5 @@ resource "aws_security_group" "lb" {
     },
   ]
   name = "${var.application_slug}-${var.application_environment}-load-balancer-security-group"
-  tags = {
-    "App"   = "${var.application_name}"
-    "Name"  = "${var.application_slug}-${var.application_environment}-load-balancer-security-group"
-    "Owner" = "${var.application_owner}"
-    "Team"  = "${var.application_team}"
-  }
+  tags = local.load_balancer_security_group_tags
 }

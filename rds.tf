@@ -34,12 +34,7 @@ resource "aws_security_group" "db" {
   ]
 
   name = "${var.application_slug}-${var.application_environment}-database-security-group"
-  tags = {
-    "App"   = "${var.application_name}"
-    "Name"  = "${var.application_slug}-${var.application_environment}-database-security-group"
-    "Owner" = "${var.application_owner}"
-    "Team"  = "${var.application_team}"
-  }
+  tags = local.rds_instance_security_group_tags
 
   lifecycle {
     ignore_changes = [
@@ -59,12 +54,7 @@ resource "aws_db_instance" "primary" {
   final_snapshot_identifier = "${var.application_slug}-${var.application_environment}-database-final-snapshot"
   instance_class            = "db.t2.micro"
   password                  = var.database_password
-  tags = {
-    "App"   = "${var.application_name}"
-    "Name"  = "${var.application_slug}-${var.application_environment}-database"
-    "Owner" = "${var.application_owner}"
-    "Team"  = "${var.application_team}"
-  }
+  tags = local.rds_instance_tags
   username = "root"
   vpc_security_group_ids = [
     aws_security_group.db[0].id,

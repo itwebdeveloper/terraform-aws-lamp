@@ -1,6 +1,6 @@
 resource "aws_sns_topic" "cloudwatch_alarms_topic" {
   name = "${var.application_slug}-${var.application_environment}-web-cloudwatch-alarms-topic"
-  tags = {}
+  tags = local.sns_topic_tags
 }
 
 resource "aws_sns_topic_subscription" "cloudwatch_alarms_topic_subscription" {

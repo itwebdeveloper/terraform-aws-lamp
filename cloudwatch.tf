@@ -20,5 +20,5 @@ resource "aws_cloudwatch_metric_alarm" "low_disk_space_alarm" {
   threshold          = 90
   treat_missing_data = "missing"
 
-  tags = {}
+  tags = local.cloudwatch_alarms_tags
 }

@@ -17,12 +17,7 @@ data "http" "myip" {
 
 resource "aws_eip" "web" {
   instance = aws_instance.web.id
-  tags = {
-    "App"   = "${var.application_name}"
-    "Name"  = "${var.application_slug}-${var.application_environment}-elastic-ip-address"
-    "Owner" = "${var.application_owner}"
-    "Team"  = "${var.application_team}"
-  }
+  tags = local.elastic_ip_tags
   vpc = true
 
   lifecycle {
