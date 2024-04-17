@@ -1,5 +1,5 @@
 locals {
-  eip_octects = split(".", aws_eip.web.public_ip)
+  eip_octects = split(".", try(aws_eip.web[0].public_ip, aws_instance.web.public_ip))
 }
 
 output "instance_public_dns" {

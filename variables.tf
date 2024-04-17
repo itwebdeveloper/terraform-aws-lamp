@@ -130,8 +130,47 @@ variable "ec2_security_group_ingress" {
   ]
 }
 
+variable "ec2_security_group_ingress_load_balancer" {
+  description = "Ingress rules for the EC2 instance security group"
+  type        = list(any)
+  default = [
+    {
+      cidr_blocks = []
+      description = "Allow HTTP connections from the Load Balancer"
+      from_port   = 80
+      ipv6_cidr_blocks = []
+      prefix_list_ids = []
+      protocol        = "tcp"
+      security_groups = [
+        "sg-091131eeb9dbc39fa",
+      ]
+      self            = false
+      to_port         = 80
+    },
+    {
+      cidr_blocks = [
+        "0.0.0.0/0",
+      ]
+      description      = "SSH connections from everywhere"
+      from_port        = 22
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      protocol         = "tcp"
+      security_groups  = []
+      self             = false
+      to_port          = 22
+    },
+  ]
+}
+
 variable "has_load_balancer" {
   description = "Flag to set an Application Load Balancer (`true`) or not (`false`). Default `false`"
+  type        = bool
+  default     = false
+}
+
+variable "has_load_balancer_https_listener" {
+  description = "Flag to set an HTTPS listener on the Application Load Balancer (`true`) or not (`false`). Default `false`"
   type        = bool
   default     = false
 }

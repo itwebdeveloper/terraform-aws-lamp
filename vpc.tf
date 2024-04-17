@@ -16,6 +16,7 @@ data "http" "myip" {
 }
 
 resource "aws_eip" "web" {
+  count     = var.has_load_balancer ? 0 : 1
   instance = aws_instance.web.id
   tags = local.elastic_ip_tags
   vpc = true

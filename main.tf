@@ -20,7 +20,7 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_security_group" "web" {
   description = "Security Group for ${var.application_name} web server"
-  ingress     = var.ec2_security_group_ingress
+  ingress     = var.has_load_balancer ? var.ec2_security_group_ingress_load_balancer : var.ec2_security_group_ingress
 
   egress = [
     {
@@ -134,7 +134,7 @@ resource "aws_lb_listener" "http" {
 }
 
 resource "aws_lb_listener" "https" {
-  count             = var.has_load_balancer ? 1 : 0
+  count             = var.has_load_balancer && var.has_load_balancer_https_listener ? 1 : 0
   load_balancer_arn = aws_lb.web[0].arn
   port              = 443
   protocol          = "HTTPS"
@@ -191,6 +191,23 @@ resource "aws_security_group" "lb" {
       to_port         = 80
     },
   ]
+
+  egress = [
+    {
+      cidr_blocks = [
+        "0.0.0.0/0",
+      ]
+      description      = ""
+      from_port        = 80
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      protocol         = "tcp"
+      security_groups  = []
+      self             = false
+      to_port          = 80
+    }
+  ]
+
   name = "${var.application_slug}-${var.application_environment}-load-balancer-security-group"
   tags = local.load_balancer_security_group_tags
 }
