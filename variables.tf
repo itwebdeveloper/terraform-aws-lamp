@@ -205,9 +205,10 @@ locals {
     Environment = var.application_environment
     Name        = "${var.application_slug}-${var.application_environment}-cloudwatch-alarm"
     Owner       = var.application_owner
-    Project     = var.application_name
+    Project     = var.application_team
     Role        = "Web"
     Team        = var.application_team
+    Tool        = var.application_name
   }
 
   ec2_instance_security_group_tags = {
@@ -215,9 +216,10 @@ locals {
     Environment = var.application_environment
     Name        = "${var.application_slug}-${var.application_environment}-security-group"
     Owner       = var.application_owner
-    Project     = var.application_name
+    Project     = var.application_team
     Role        = "Web"
     Team        = var.application_team
+    Tool        = var.application_name
   }
 
   ec2_instance_tags = {
@@ -225,9 +227,10 @@ locals {
     Environment = var.application_environment
     Name        = "${var.application_slug}-${var.application_environment}-web-1"
     Owner       = var.application_owner
-    Project     = var.application_name
+    Project     = var.application_team
     Role        = "Web"
     Team        = var.application_team
+    Tool        = var.application_name
   }
 
   ebs_volume_tags = {
@@ -235,9 +238,10 @@ locals {
     Environment = var.application_environment
     Name        = "${var.application_slug}-${var.application_environment}-ebs"
     Owner       = var.application_owner
-    Project     = var.application_name
+    Project     = var.application_team
     Role        = "Web"
     Team        = var.application_team
+    Tool        = var.application_name
   }
 
   elastic_ip_tags = {
@@ -245,9 +249,10 @@ locals {
     Environment = var.application_environment
     Name        = "${var.application_slug}-${var.application_environment}-elastic-ip-address"
     Owner       = var.application_owner
-    Project     = var.application_name
+    Project     = var.application_team
     Role        = "Web"
     Team        = var.application_team
+    Tool        = var.application_name
   }
 
   network_interface_tags = {
@@ -255,9 +260,10 @@ locals {
     Environment = var.application_environment
     Name        = "${var.application_slug}-${var.application_environment}-network-interface"
     Owner       = var.application_owner
-    Project     = var.application_name
+    Project     = var.application_team
     Role        = "Web"
     Team        = var.application_team
+    Tool        = var.application_name
   }
 
   load_balancer_tags = {
@@ -265,9 +271,10 @@ locals {
     Environment = var.application_environment
     Name        = "${var.application_slug}-${var.application_environment}-load-balancer"
     Owner       = var.application_owner
-    Project     = var.application_name
+    Project     = var.application_team
     Role        = "Web"
     Team        = var.application_team
+    Tool        = var.application_name
   }
 
   load_balancer_http_listener_tags = {
@@ -275,9 +282,10 @@ locals {
     Environment = var.application_environment
     Name        = "${var.application_slug}-${var.application_environment}-load-balancer-http-listener"
     Owner       = var.application_owner
-    Project     = var.application_name
+    Project     = var.application_team
     Role        = "Web"
     Team        = var.application_team
+    Tool        = var.application_name
   }
 
   load_balancer_https_listener_tags = {
@@ -285,9 +293,10 @@ locals {
     Environment = var.application_environment
     Name        = "${var.application_slug}-${var.application_environment}-load-balancer-https-listener"
     Owner       = var.application_owner
-    Project     = var.application_name
+    Project     = var.application_team
     Role        = "Web"
     Team        = var.application_team
+    Tool        = var.application_name
   }
 
   load_balancer_target_group_tags = {
@@ -295,9 +304,10 @@ locals {
     Environment = var.application_environment
     Name        = "${var.application_slug}-${var.application_environment}-load-balancer-target-group"
     Owner       = var.application_owner
-    Project     = var.application_name
+    Project     = var.application_team
     Role        = "Web"
     Team        = var.application_team
+    Tool        = var.application_name
   }
 
   load_balancer_security_group_tags = {
@@ -305,9 +315,10 @@ locals {
     Environment = var.application_environment
     Name        = "${var.application_slug}-${var.application_environment}-load-balancer-security-group"
     Owner       = var.application_owner
-    Project     = var.application_name
+    Project     = var.application_team
     Role        = "Web"
     Team        = var.application_team
+    Tool        = var.application_name
   }
 
 
@@ -316,9 +327,10 @@ locals {
     Environment = var.application_environment
     Name        = "${var.application_slug}-${var.application_environment}-database-security-group"
     Owner       = var.application_owner
-    Project     = var.application_name
+    Project     = var.application_team
     Role        = "DB"
     Team        = var.application_team
+    Tool        = var.application_name
   }
 
   rds_instance_tags = {
@@ -326,9 +338,10 @@ locals {
     Environment = var.application_environment
     Name        = "${var.application_slug}-${var.application_environment}-database"
     Owner       = var.application_owner
-    Project     = var.application_name
+    Project     = var.application_team
     Role        = "DB"
     Team        = var.application_team
+    Tool        = var.application_name
   }
 
   sns_topic_tags = {
@@ -336,8 +349,9 @@ locals {
     Environment = var.application_environment
     Name        = "${var.application_slug}-${var.application_environment}-sns-topic"
     Owner       = var.application_owner
-    Project     = var.application_name
+    Project     = var.application_team
     Role        = "Web"
     Team        = var.application_team
+    Tool        = var.application_name
   }
 }
