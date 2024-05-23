@@ -154,6 +154,24 @@ resource "aws_lb_target_group" "http" {
   tags = local.load_balancer_target_group_tags
 
   vpc_id = data.aws_vpc.default.id
+
+  health_check {
+    path                = "/"
+    port                = "80"
+    protocol            = "HTTP"
+    timeout             = 5
+    interval            = 30
+    healthy_threshold   = 5
+    unhealthy_threshold = 2
+    matcher             = "200-399"
+  }
+}
+
+resource "aws_lb_target_group_attachment" "http" {
+  count    = var.has_load_balancer ? 1 : 0
+  target_group_arn = aws_lb_target_group.http[0].arn
+  target_id        = aws_instance.web.id
+  port             = 80
 }
 
 resource "aws_security_group" "lb" {
