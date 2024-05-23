@@ -20,8 +20,4 @@ resource "aws_eip" "web" {
   instance = aws_instance.web.id
   tags = local.elastic_ip_tags
   vpc = true
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
