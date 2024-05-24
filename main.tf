@@ -20,7 +20,78 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_security_group" "web" {
   description = "Security Group for ${var.application_name} web server"
-  ingress     = var.has_load_balancer ? var.ec2_security_group_ingress_load_balancer : var.ec2_security_group_ingress
+  ingress     = var.has_load_balancer ? [
+    {
+      cidr_blocks = []
+      description = "Allow HTTP connections from the Load Balancer"
+      from_port   = 80
+      ipv6_cidr_blocks = []
+      prefix_list_ids = []
+      protocol        = "tcp"
+      security_groups = [
+        aws_security_group.lb[0].id,
+      ]
+      self            = false
+      to_port         = 80
+    },
+    {
+      cidr_blocks = [
+        "0.0.0.0/0",
+      ]
+      description      = "SSH connections from everywhere"
+      from_port        = 22
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      protocol         = "tcp"
+      security_groups  = []
+      self             = false
+      to_port          = 22
+    },
+  ] : [
+    {
+      cidr_blocks = [
+        "0.0.0.0/0",
+      ]
+      description = "Allow HTTP connections from everywhere"
+      from_port   = 80
+      ipv6_cidr_blocks = [
+        "::/0",
+      ]
+      prefix_list_ids = []
+      protocol        = "tcp"
+      security_groups = []
+      self            = false
+      to_port         = 80
+    },
+    {
+      cidr_blocks = [
+        "0.0.0.0/0",
+      ]
+      description = "Allow HTTPS connections from everywhere"
+      from_port   = 443
+      ipv6_cidr_blocks = [
+        "::/0",
+      ]
+      prefix_list_ids = []
+      protocol        = "tcp"
+      security_groups = []
+      self            = false
+      to_port         = 443
+    },
+    {
+      cidr_blocks = [
+        "0.0.0.0/0",
+      ]
+      description      = "SSH connections from everywhere"
+      from_port        = 22
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      protocol         = "tcp"
+      security_groups  = []
+      self             = false
+      to_port          = 22
+    },
+  ]
 
   egress = [
     {
