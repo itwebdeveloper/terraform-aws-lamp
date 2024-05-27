@@ -92,6 +92,12 @@ variable "has_load_balancer_https_listener" {
   default     = false
 }
 
+variable "ssl_certificate_arn" {
+  description = "ARN of the SSL certificate used by the HTTPS listener"
+  type        = string
+  default     = ""
+}
+
 variable "has_database" {
   description = "Flag to set a Database (`true`) or not (`false`). Default `false`"
   type        = bool

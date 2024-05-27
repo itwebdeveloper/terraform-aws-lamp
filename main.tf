@@ -209,7 +209,7 @@ resource "aws_lb_listener" "https" {
   load_balancer_arn = aws_lb.web[0].arn
   port              = 443
   protocol          = "HTTPS"
-  certificate_arn   = "arn:aws:acm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:certificate/722f58cc-c176-4c76-8d7d-29f3ba97c5a2"
+  certificate_arn   = var.ssl_certificate_arn
   tags              = local.load_balancer_https_listener_tags
 
   default_action {
